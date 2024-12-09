@@ -1,0 +1,40 @@
+pipeline {
+    agent any
+
+    stages {
+        stage('Clone Repository') {
+            steps {
+                git branch: 'master', url: 'https://github.com/rehanzproject/academade-frontend.git'
+            }
+        }
+
+        stage('Install Dependencies') {
+            steps {
+                sh '''
+                echo "Installing dependencies..."
+                npm install
+                '''
+            }
+        }
+
+        stage('Build') {
+            steps {
+                sh '''
+                echo "Building React application..."
+                npm run build
+                '''
+            }
+        }
+
+        stage('Deploy') {
+            steps {
+                sh '''
+                echo "Deploying application..."
+                # Replace the following with your deployment steps
+                # For example, copying the build output to a server
+                cp -r dist /var/www
+                '''
+            }
+        }
+    }
+}
