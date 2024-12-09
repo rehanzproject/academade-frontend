@@ -1,7 +1,6 @@
-import React, { useEffect } from "react";
+import  { useEffect } from "react";
 import { Link } from "react-router-dom";
 import GuruSvg from "/svg/Guru.svg";
-import LogoSvg from "/svg/Logo.svg";
 import Navbar from "../../components/templates/Navbar.template";
 
 function LandingPage() {
@@ -18,7 +17,7 @@ function LandingPage() {
           <div className="mr-10">
             <div className="mb-10">
               <p className="text-5xl text-white font-bold">
-                SELAMAT DATANG di halaman admin
+                SELAMAT DATANG di halaman admin ahahahah
               </p>
             </div>
             <div>

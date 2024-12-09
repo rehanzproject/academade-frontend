@@ -1,5 +1,5 @@
-# Step 1: Build the frontend application using Node.js
-FROM node:18 AS build
+# Step 1: Build the frontend application using Bun
+FROM oven/bun:1 AS build
 
 # Set the working directory inside the container
 WORKDIR /app
@@ -7,14 +7,14 @@ WORKDIR /app
 # Copy package.json and package-lock.json
 COPY package*.json ./
 
-# Install dependencies
-RUN npm install --legacy-peer-deps
+# Install dependencies with Bun
+RUN bun install
 
 # Copy the rest of the application files
 COPY . .
 
 # Build the frontend app for production
-RUN npm run build
+RUN bun run build
 
 # Step 2: Use NGINX to serve the built app
 FROM nginx:alpine
