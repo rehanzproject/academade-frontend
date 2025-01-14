@@ -1,4 +1,3 @@
-import React from "react";
 import DetailCardInfo from "../../molecules/DetailCardInfo";
 import LocalAvatar from "/images/Avatar.png";
 
@@ -11,7 +10,7 @@ function UserProfileThumbnailCard({ data, avatar }) {
       <img
         src={
           avatar
-            ? `${import.meta.env.VITE_BASE_URL}/api/v1/public/image/${avatar}`
+            ? `${import.meta.env.VITE_API_URL}/api/v1/public/image/${avatar}`
             : LocalAvatar
         }
         alt="user thumbnail"

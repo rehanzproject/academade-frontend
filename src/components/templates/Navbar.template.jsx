@@ -1,6 +1,3 @@
-/* eslint-disable jsx-a11y/anchor-is-valid */
-/* eslint-disable jsx-a11y/img-redundant-alt */
-import React from "react";
 import "../../index.css";
 import { Link } from "react-router-dom";
 import homeImage from "/images/logo.png";
