@@ -13,7 +13,7 @@ function UserListCard({ id, course_id, name, modules, member_count }) {
   const randomBorderColor = getRandomBorderColor();
   const { getRequest } = useHTTP();
   const { data, isLoading } = useSWR(
-    `/api/v1/admin/who/enrolled/course?name=${name}&course_id=${course_id}`,
+    `/admin/who/enrolled/course?name=${name}&course_id=${course_id}`,
     getRequest
   );
   const exportToExcel = async (name) => {

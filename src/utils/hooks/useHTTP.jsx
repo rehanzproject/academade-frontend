@@ -58,10 +58,10 @@ const useHTTP = () => {
   const login = async (value) => {
     try {
       const result = await axios.post(
-        `${baseUrl}/api/v1/user/login`,
+        `${baseUrl}/user/login`,
         value
       );
-      Cookies.set("token", result.data.data);
+      Cookies.set("token", result.data.data.access_token);
       return result.data.data;
     } catch (error) {
       handleError(error);

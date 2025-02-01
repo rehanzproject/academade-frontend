@@ -17,7 +17,7 @@ function CourseReminder() {
   const handleSubmit = async (values, { setSubmitting }) => {
     try {
       const result = await postRequest(
-        `/api/v1/admin/course/reminder?id=${state.course_id}`,
+        `/admin/course/reminder?id=${state.course_id}`,
         values
       );
       if (result.success) {

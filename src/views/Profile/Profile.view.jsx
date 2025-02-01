@@ -10,15 +10,15 @@ import useHTTP from "../../utils/hooks/useHTTP";
 function ContentProfile() {
   const { getRequest } = useHTTP();
   const { data: course, isLoading: courseLoading } = useSWR(
-    "/api/v1/admin/course?size=3&page=1",
+    "/admin/course?size=3&page=1",
     getRequest
   );
   const { data: profile, isLoading: profileLoading } = useSWR(
-    "/api/v1/admin/info",
+    "/admin/info",
     getRequest
   );
   const { data: comment, isLoading: commentLoading } = useSWR(
-    "/api/v1/admin/course/reviews?size=6&page=1",
+    "/admin/course/reviews?size=6&page=1",
     getRequest
   );
   return (

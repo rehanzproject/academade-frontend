@@ -12,15 +12,15 @@ import useHTTP from "../../utils/hooks/useHTTP";
 function DashboardView() {
   const { getRequest } = useHTTP();
   const { data: dataStats, isLoading: dataStatsLoading } = useSWR(
-    "/api/v1/admin/stats",
+    "/admin/stats",
     getRequest
   );
   const { data: dataHistory, isLoading: dataHistoryLoading } = useSWR(
-    "/api/v1/admin/checkout/history/all?size=8&page=1",
+    "/admin/checkout/history/all?size=8&page=1",
     getRequest
   );
   const { data: dataCourses, isLoading: dataCoursesLoading } = useSWR(
-    "/api/v1/admin/course?size=20&page=1",
+    "/admin/course?size=20&page=1",
     getRequest
   );
   const orderData = dataHistory?.data?.map((value) => {

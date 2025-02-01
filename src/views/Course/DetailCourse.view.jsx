@@ -11,7 +11,7 @@ function DetailCourseView() {
   const { id_course } = useParams();
   const navigate = useNavigate();
   const { data, isLoading } = useSWR(
-    `/api/v1/admin/course/detail?id=${id_course}`,
+    `/admin/course/detail?id=${id_course}`,
     getRequest
   );
   const handleAddChapter = useCallback(() => {

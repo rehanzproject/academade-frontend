@@ -11,7 +11,7 @@ function ReportingSummary() {
   const { detail_user } = useParams();
   const { state } = useLocation();
   const { data: rawData, isLoading } = useSWR(
-    `/api/v1/admin/course/resume?name=${detail_user}&id=${state.course_id}`,
+    `/admin/course/resume?name=${detail_user}&id=${state.course_id}`,
     getRequest
   );
 

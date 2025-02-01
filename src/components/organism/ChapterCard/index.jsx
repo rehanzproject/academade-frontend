@@ -24,7 +24,7 @@ function ChapterCard({
   const handleDelete = async () => {
     toast.loading(`Deleting ${name} module...`);
     try {
-      await deleteRequest(`/api/v1/admin/module?id=${module_id}`);
+      await deleteRequest(`/admin/module?id=${module_id}`);
       toast.dismiss();
       toast.info(`Succesfully deleted ${name} module!`, { autoClose: 1500 });
     } catch (error) {

@@ -7,7 +7,7 @@ import useHTTP from "../../utils/hooks/useHTTP";
 function ReportingView() {
   const { getRequest } = useHTTP();
   const { data: course, isLoading } = useSWR(
-    "/api/v1/admin/course?size=20&page=1",
+    "/admin/course?size=20&page=1",
     getRequest
   );
 

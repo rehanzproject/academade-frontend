@@ -25,7 +25,7 @@ function CourseCard({
 
   const handleDelete = async () => {
     try {
-      await deleteRequest(`/api/v1/admin/course?id=${course_id}`);
+      await deleteRequest(`/admin/course?id=${course_id}`);
     } catch (error) {
       console.log(error.message);
     }

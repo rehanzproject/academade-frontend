@@ -28,7 +28,7 @@ function Quiz() {
   });
 
   const { data: existingData } = useSWR(
-    `/api/v1/admin/module/quiz?id=${id_chapter}`,
+    `/admin/module/quiz?id=${id_chapter}`,
     getRequest
   );
   React.useEffect(() => {
@@ -59,14 +59,14 @@ function Quiz() {
     try {
       if (existingData) {
         const response = await updateRequest(
-          `/api/v1/admin/module/quiz?id=${id_chapter}`,
+          `/admin/module/quiz?id=${id_chapter}`,
           data
         );
         toast.success("Edit quiz success", { autoClose: 1000 });
       }
       if (existingData === undefined) {
         const response = await postRequest(
-          `/api/v1/admin/module/quiz?id=${id_chapter}`,
+          `/admin/module/quiz?id=${id_chapter}`,
           JSON.stringify(data)
         );
         toast.success("Create quiz success", { autoClose: 1000 });

@@ -7,7 +7,7 @@ import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import Navbar from "../../components/templates/Navbar.template";
 import useHTTP from "../../utils/hooks/useHTTP";
-
+import sessionSlice from "../../config/redux/Session/sessionSlice/sessionSlice";
 function Login(props) {
   const { login } = useHTTP();
   const [showPassword, setShowPassword] = useState(false);
@@ -53,16 +53,6 @@ function Login(props) {
     },
   });
 
-  useEffect(() => {
-    if (loginSuccess) {
-      toast.success("Welcome back!", {
-        onClose: () => {
-          navigate("/dashboard");
-        },
-      });
-    }
-  }, [loginSuccess, navigate]);
-
   const handleTogglePassword = () => {
     setShowPassword((prevShowPassword) => !prevShowPassword);
   };
@@ -72,9 +62,9 @@ function Login(props) {
       <Navbar isLogged={props.isLogged} />
       <div className="bg-[url('/images/bgLanding.png')] bg-cover min-h-screen">
         <div className="flex justify-center items-center h-screen text-base">
-          <div className="bg-white p-20 rounded-xl shadow-md m-2">
+          <div className="bg-white p-6 md:p-10 lg:p-20 rounded-xl shadow-md m-2 w-full max-w-md">
             <form onSubmit={formik.handleSubmit}>
-              <label htmlFor="email" className="font-semibold ">
+              <label htmlFor="email" className="font-semibold">
                 Email:
               </label>
               <input
@@ -130,7 +120,7 @@ function Login(props) {
               )}
               <button
                 type="submit"
-                className="bg-blue-500 text-white mt-6 py-2 px-4 rounded-lg w-full"
+                className="bg-blue-500 text-white mt-6 py-2 px-4 rounded-lg w-full hover:bg-blue-600 transition duration-300"
               >
                 Login
               </button>

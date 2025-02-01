@@ -8,6 +8,7 @@ import sessionSlice from "../../../config/redux/Session/sessionSlice/sessionSlic
 import useHTTP from "../../../utils/hooks/useHTTP";
 import useSWR from "swr";
 import pict from "/images/picture.avif";
+
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
 }
@@ -16,19 +17,24 @@ function NavigationBar() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { getRequest } = useHTTP();
+
   const handleLogout = () => {
     Cookies.remove("token");
     dispatch(sessionSlice.actions.removeToken());
     navigate("/");
   };
-  const { data: profile } = useSWR("/api/v1/user/info", getRequest);
+
+  const { data: profile } = useSWR("/user/info", getRequest);
 
   return (
-    <section className="flex sticky top-4 z-20 max-w-8xl mx-8 my-4 px-10 bg-warning-10 h-16 shadow-xl rounded-2xl">
-      <IconAcademade />
+    <section className="flex sticky top-4 z-20 max-w-8xl mx-4 md:mx-8 my-4 px-4 md:px-10 bg-warning-10 h-16 shadow-xl rounded-2xl">
+      {/* Logo Section */}
+      <div className="flex items-center">
+        <IconAcademade />
+      </div>
 
       {/* Dropdown Icon */}
-      <section className="absolute inset-y-0 right-0 flex items-center pr-10">
+      <section className="absolute inset-y-0 right-0 flex items-center pr-4 md:pr-10">
         <Menu as="div" className="relative mx-4">
           <Menu.Button className="flex -mb-1 gap-3 rounded-full text-sm focus:ring-white focus:ring-offset-2">
             <img
@@ -36,7 +42,7 @@ function NavigationBar() {
               src={`${profile?.image ?? pict}`}
               alt="avatar"
             />
-            <h2 className="py-1 text-xl font-medium">
+            <h2 className="py-1 text-base md:text-xl font-medium">
               {profile ? profile?.data?.name : "admin"}
             </h2>
           </Menu.Button>

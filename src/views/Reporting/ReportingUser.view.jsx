@@ -8,7 +8,7 @@ function ReportingUserView() {
   const { getRequest } = useHTTP();
   const { course_name } = useParams();
   const { data, isLoading } = useSWR(
-    `/api/v1/admin/who/enrolled/course?name=${course_name}`,
+    `/admin/who/enrolled/course?name=${course_name}`,
     getRequest
   );
   const { state } = useLocation();

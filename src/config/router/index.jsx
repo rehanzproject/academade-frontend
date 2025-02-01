@@ -29,8 +29,8 @@ function RootRouter() {
     dispatch(sessionSlice.actions.updateToken(token));
   }, []);
   return (
-    <BrowserRouter>
-      <Routes>
+    <BrowserRouter future={{v7_relativeSplatPath: true, v7_startTransition: true}}>
+      <Routes >
         <Route path="/" element={<LandingPage />} />
 
         <Route element={<DashboardTemplate />}>
