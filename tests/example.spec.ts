@@ -1,18 +1,120 @@
-import { test, expect } from '@playwright/test';
+import { test, expect } from "@playwright/test";
 
-test('has title', async ({ page }) => {
-  await page.goto('https://playwright.dev/');
+test("has title", async ({ page }) => {
+  await page.goto("https://academade.codeflow.id");
 
   // Expect a title "to contain" a substring.
-  await expect(page).toHaveTitle(/Playwright/);
+  await expect(page).toHaveTitle(/Academade/);
 });
 
-test('get started link', async ({ page }) => {
-  await page.goto('https://playwright.dev/');
+test("go to login page", async ({ page }) => {
+  await page.goto("https://academade.codeflow.id");
 
-  // Click the get started link.
-  await page.getByRole('link', { name: 'Get started' }).click();
+  // Click Sign In link
+  await page.getByRole("link", { name: "Sign In" }).click();
 
-  // Expects page to have a heading with the name of Installation.
-  await expect(page.getByRole('heading', { name: 'Installation' })).toBeVisible();
+  // ✅ Expect URL
+  await expect(page).toHaveURL(/\/login/);
+
+});
+
+test("email validation - invalid email shows error", async ({ page }) => {
+  await page.goto("https://academade.codeflow.id");
+
+  // open login
+  await page.getByRole("link", { name: "Sign In" }).click();
+
+  // fill invalid email and submit
+  const emailInput = page.locator('input[name="email"]'); // change selector to your input
+  await emailInput.fill("not-an-email");
+  await page.locator('input[name="password"]').fill("somepassword"); // if required
+  await page.getByRole("button", { name: /Login/i }).click();
+  await expect(page.getByRole("alert")).toHaveText(
+    /Incorrect Password\/Email !/i
+  );
+});
+
+test("email validation - valid email proceeds to dashboard", async ({
+  page,
+}) => {
+  await page.goto("https://academade.codeflow.id");
+
+  // open login
+  await page.getByRole("link", { name: "Sign In" }).click();
+
+  // fill valid email and submit
+  const emailInput = page.locator('input[name="email"]');
+  await emailInput.fill("rehanmaul111@gmail.com"); // use test account
+  await page.locator('input[name="password"]').fill("Rehanm123*");
+  await page.getByRole("button", { name: /Login/ }).click();
+  // assert success: url changed or dashboard heading visible
+  await expect(page).toHaveURL(/dashboard/);
+  // await expect(page.getByRole('heading', { name: /dashboard|welcome/i })).toBeVisible();
+});
+
+test("login fails with invalid email", async ({ page }) => {
+  await page.goto("https://academade.codeflow.id");
+  await page.getByRole("link", { name: "Sign In" }).click();
+
+  // fill invalid email
+  await page.locator('input[name="email"]').fill("not-an-email");
+  await page.locator('input[name="password"]').fill("somepassword");
+  await page.getByRole("button", { name: /Login/i }).click();
+
+  // expect toast error
+  await expect(page.getByRole("alert")).toHaveText(
+    /Incorrect Password\/Email !/i
+  );
+});
+
+test("login fails with invalid password", async ({ page }) => {
+  await page.goto("https://academade.codeflow.id");
+  await page.getByRole("link", { name: "Sign In" }).click();
+
+  // fill valid email but wrong password
+  await page.locator('input[name="email"]').fill("rehanmaul111@gmail.com");
+  await page.locator('input[name="password"]').fill("wrongpassword123");
+  await page.getByRole("button", { name: /Login/i }).click();
+
+  // expect toast error
+  await expect(page.getByRole("alert")).toHaveText(
+    /Incorrect Password\/Email !/i
+  );
+});
+
+test("login succeeds with valid email and password", async ({ page }) => {
+  await page.goto("https://academade.codeflow.id");
+  await page.getByRole("link", { name: "Sign In" }).click();
+
+  // fill valid credentials
+  await page.locator('input[name="email"]').fill("rehanmaul111@gmail.com");
+  await page.locator('input[name="password"]').fill("Rehanm123*");
+  await page.getByRole("button", { name: /Login/i }).click();
+
+  // expect navigation to dashboard
+  await expect(page).toHaveURL(/dashboard/);
+  // optionally check heading or welcome message
+  // await expect(page.getByRole('heading', { name: /dashboard|welcome/i })).toBeVisible();
+});
+
+test("dashboard shows Profile", async ({ page }) => {
+  await page.goto("https://academade.codeflow.id/dashboard");
+  await page.getByRole("link", { name: /^rehanMaulana$/ }).click();
+ await page.getByRole("link", { name: /^My Profile$/ }).click(); 
+ await expect(page).toHaveURL(/profile/);
+});
+
+test("dashboard shows Profile My Course", async ({ page }) => {
+  await page.goto("https://academade.codeflow.id/dashboard");
+  await page.getByRole("link", { name: /^rehanMaulana$/ }).click();
+ await page.getByRole("link", { name: /^My Profile$/ }).click();
+  await expect(page).toHaveURL(/profile/);
+  await page.getByText(/Lainnya/).click();
+  await expect(page).toHaveURL(/profile\/mycourse/);
+});
+
+test("dashboard shows Course", async ({ page }) => {
+  await page.goto("https://academade.codeflow.id/dashboard");
+  await page.getByRole("link", { name: /^Course$/ }).click();
+  await expect(page).toHaveURL(/course/);
 });
