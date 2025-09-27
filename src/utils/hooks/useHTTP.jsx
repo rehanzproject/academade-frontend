@@ -6,7 +6,7 @@ import "react-toastify/dist/ReactToastify.css";
 
 const useHTTP = () => {
   const baseUrl = import.meta.env.VITE_BASE_URL;
-  const tokenCookies  = Cookies.get("token");
+  const tokenCookies = Cookies.get("token");
   const tokenFromRedux = useSelector((state) => state.session.token);
   const token = tokenCookies || tokenFromRedux;
   const config = {
@@ -45,10 +45,7 @@ const useHTTP = () => {
 
   const getRequest = async (url) => {
     try {
-      const res = await axios.get(
-        `${baseUrl}${url}`,
-        config
-      );
+      const res = await axios.get(`${baseUrl}${url}`, config);
       return res.data;
     } catch (error) {
       handleError(error);
@@ -59,9 +56,10 @@ const useHTTP = () => {
     try {
       const result = await axios.post(
         `${baseUrl}/user/login`,
-        value
+        value,
+        { withCredentials: true } // 👈 this makes the cookie show up
       );
-      Cookies.set("token", result.data.data.access_token);
+      Cookies.set("token", result.data.data);
       return result.data.data;
     } catch (error) {
       handleError(error);
@@ -70,11 +68,7 @@ const useHTTP = () => {
 
   const postRequest = async (url, value) => {
     try {
-      const res = await axios.post(
-        `${baseUrl}${url}`,
-        value,
-        config
-      );
+      const res = await axios.post(`${baseUrl}${url}`, value, config);
 
       return res.data;
     } catch (error) {
@@ -84,11 +78,7 @@ const useHTTP = () => {
 
   const updateRequest = async (url, value) => {
     try {
-      const res = await axios.put(
-        `${baseUrl}${url}`,
-        value,
-        config
-      );
+      const res = await axios.put(`${baseUrl}${url}`, value, config);
       return res.data;
     } catch (error) {
       handleError(error);
@@ -97,10 +87,7 @@ const useHTTP = () => {
 
   const deleteRequest = async (url) => {
     try {
-      const res = await axios.delete(
-        `${baseUrl}${url}`,
-        config
-      );
+      const res = await axios.delete(`${baseUrl}${url}`, config);
       return res.data;
     } catch (error) {
       handleError(error);

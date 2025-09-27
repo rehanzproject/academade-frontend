@@ -1,0 +1,55 @@
+name: Deploy React to VPS (aaPanel)
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Bun
+        uses: oven-sh/setup-bun@v1
+
+      - name: Install dependencies
+        run: bun install --frozen-lockfile
+
+      - name: Build React app
+        run: bun run build --mode production
+        env:
+          VITE_BASE_URL: ${{ secrets.VITE_BASE_URL }}
+
+      # Install Playwright browsers (needed for testing)
+      - name: Install Playwright
+        run: npx playwright install --with-deps
+
+      # Start local server for testing
+      - name: Start server
+        run: bun run preview & npx wait-on http://localhost:5173
+        env:
+          VITE_BASE_URL: http://localhost:5173
+
+      # Run Playwright tests
+      - name: Run Playwright tests
+        run: npx playwright test
+
+      # Deploy only if tests pass
+      - name: Deploy build folder to VPS
+        if: success()
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.VPS_SSH_KEY }}
+          VPS_HOST: ${{ secrets.VPS_HOST }}
+          VPS_USER: ${{ secrets.VPS_USER }}
+          VPS_PORT: ${{ secrets.VPS_PORT }}
+        run: |
+          echo "$SSH_PRIVATE_KEY" > private_key
+          chmod 600 private_key
+
+          rsync -avz --delete --exclude='.user.ini' --ignore-errors -e "ssh -i private_key -p $VPS_PORT -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null" \
+            build/client/ $VPS_USER@$VPS_HOST:/www/wwwroot/academade.codeflow.id/
+
+          rm private_key
