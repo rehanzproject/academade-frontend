@@ -5,7 +5,7 @@ import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 const useHTTP = () => {
-  const baseUrl = import.meta.env.VITE_BASE_URL;
+  const baseUrl = import.meta.env.VITE_BASE_API_URL;
   const tokenCookies = Cookies.get("token");
   const tokenFromRedux = useSelector((state) => state.session.token);
   const token = tokenCookies || tokenFromRedux;

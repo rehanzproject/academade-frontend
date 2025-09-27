@@ -1,17 +1,16 @@
 import { test, expect } from "@playwright/test";
 
-
-test.use({ video: 'on' }); // or 'retain-on-failure'
+test.use({ video: "on" }); // or 'retain-on-failure'
 
 test("has title", async ({ page }) => {
-  await page.goto("https://academade.codeflow.id");
+  await page.goto("/");
 
   // Expect a title "to contain" a substring.
   await expect(page).toHaveTitle(/Academade/);
 });
 
 test("go to login page", async ({ page }) => {
-  await page.goto("https://academade.codeflow.id");
+  await page.goto("/");
 
   // Click Sign In link
   await page.getByRole("link", { name: "Sign In" }).click();
@@ -21,7 +20,7 @@ test("go to login page", async ({ page }) => {
 });
 
 test("email validation - invalid email shows error", async ({ page }) => {
-  await page.goto("https://academade.codeflow.id");
+  await page.goto("/");
 
   // open login
   await page.getByRole("link", { name: "Sign In" }).click();
@@ -39,7 +38,7 @@ test("email validation - invalid email shows error", async ({ page }) => {
 test("email validation - valid email proceeds to dashboard", async ({
   page,
 }) => {
-  await page.goto("https://academade.codeflow.id");
+  await page.goto("/");
 
   // open login
   await page.getByRole("link", { name: "Sign In" }).click();
@@ -55,7 +54,7 @@ test("email validation - valid email proceeds to dashboard", async ({
 });
 
 test("login fails with invalid email", async ({ page }) => {
-  await page.goto("https://academade.codeflow.id");
+  await page.goto("/");
   await page.getByRole("link", { name: "Sign In" }).click();
 
   // fill invalid email
@@ -70,7 +69,7 @@ test("login fails with invalid email", async ({ page }) => {
 });
 
 test("login fails with invalid password", async ({ page }) => {
-  await page.goto("https://academade.codeflow.id");
+  await page.goto("/");
   await page.getByRole("link", { name: "Sign In" }).click();
 
   // fill valid email but wrong password
@@ -85,7 +84,7 @@ test("login fails with invalid password", async ({ page }) => {
 });
 
 test("login succeeds with valid email and password", async ({ page }) => {
-  await page.goto("https://academade.codeflow.id");
+  await page.goto("/");
   await page.getByRole("link", { name: "Sign In" }).click();
 
   // fill valid credentials
@@ -98,5 +97,3 @@ test("login succeeds with valid email and password", async ({ page }) => {
   // optionally check heading or welcome message
   // await expect(page.getByRole('heading', { name: /dashboard|welcome/i })).toBeVisible();
 });
-
-
