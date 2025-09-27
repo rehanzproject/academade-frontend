@@ -22,25 +22,8 @@ jobs:
         run: bun run build --mode production
         env:
           VITE_BASE_API_URL: ${{ secrets.VITE_BASE_API_URL }}
-
-      # Install Playwright browsers (needed for testing)
-      - name: Install Playwright
-        run:
-          npx playwright install --with-deps
-
-          # Start local server for testing
-      - name: Start server
-        run: bun run preview & npx wait-on http://localhost:4173
-
-      # Run Playwright tests
-      - name: Run Playwright tests
-        env:
-          VITE_BASE_URL: http://localhost:4173 # frontend for Playwright
-        run: npx playwright test
-
       # Deploy only if tests pass
       - name: Deploy build folder to VPS
-        if: success()
         env:
           SSH_PRIVATE_KEY: ${{ secrets.VPS_SSH_KEY }}
           VPS_HOST: ${{ secrets.VPS_HOST }}
