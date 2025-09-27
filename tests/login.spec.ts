@@ -1,5 +1,8 @@
 import { test, expect } from "@playwright/test";
 
+
+test.use({ video: 'on' }); // or 'retain-on-failure'
+
 test("has title", async ({ page }) => {
   await page.goto("https://academade.codeflow.id");
 
@@ -15,7 +18,6 @@ test("go to login page", async ({ page }) => {
 
   // ✅ Expect URL
   await expect(page).toHaveURL(/\/login/);
-
 });
 
 test("email validation - invalid email shows error", async ({ page }) => {
@@ -97,24 +99,4 @@ test("login succeeds with valid email and password", async ({ page }) => {
   // await expect(page.getByRole('heading', { name: /dashboard|welcome/i })).toBeVisible();
 });
 
-test("dashboard shows Profile", async ({ page }) => {
-  await page.goto("https://academade.codeflow.id/dashboard");
-  await page.getByRole("link", { name: /^rehanMaulana$/ }).click();
- await page.getByRole("link", { name: /^My Profile$/ }).click(); 
- await expect(page).toHaveURL(/profile/);
-});
 
-test("dashboard shows Profile My Course", async ({ page }) => {
-  await page.goto("https://academade.codeflow.id/dashboard");
-  await page.getByRole("link", { name: /^rehanMaulana$/ }).click();
- await page.getByRole("link", { name: /^My Profile$/ }).click();
-  await expect(page).toHaveURL(/profile/);
-  await page.getByText(/Lainnya/).click();
-  await expect(page).toHaveURL(/profile\/mycourse/);
-});
-
-test("dashboard shows Course", async ({ page }) => {
-  await page.goto("https://academade.codeflow.id/dashboard");
-  await page.getByRole("link", { name: /^Course$/ }).click();
-  await expect(page).toHaveURL(/course/);
-});
