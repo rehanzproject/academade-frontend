@@ -34,6 +34,6 @@ jobs:
           chmod 600 private_key
 
           rsync -avz --delete --exclude='.user.ini' --ignore-errors -e "ssh -i private_key -p $VPS_PORT -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null" \
-            build/client/ $VPS_USER@$VPS_HOST:/www/wwwroot/academade.codeflow.id/
+            dist/ $VPS_USER@$VPS_HOST:/www/wwwroot/academade.codeflow.id/
 
           rm private_key
