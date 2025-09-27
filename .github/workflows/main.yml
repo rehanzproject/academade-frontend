@@ -30,12 +30,12 @@ jobs:
 
           # Start local server for testing
       - name: Start server
-        run: bun run preview & npx wait-on http://localhost:5173
+        run: bun run preview & npx wait-on http://localhost:4173
 
       # Run Playwright tests
       - name: Run Playwright tests
         env:
-          VITE_BASE_URL: http://localhost:5173 # frontend for Playwright
+          VITE_BASE_URL: http://localhost:4173 # frontend for Playwright
         run: npx playwright test
 
       # Deploy only if tests pass
