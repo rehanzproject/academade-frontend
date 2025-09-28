@@ -16,7 +16,7 @@ function LandingPage() {
           <div className="md:mr-10 text-center md:text-left">
             <div className="mb-10">
               <p className="text-3xl md:text-4xl lg:text-5xl text-white font-bold">
-                SELAMAT DATANG di halaman admin
+                SELAMAT DATANG di halaman admin test 
               </p>
             </div>
             <div>
