@@ -1,4 +1,3 @@
-import React from "react";
 import IncomeIcon from "../../atoms/Icons/IncomeIcon.atom";
 
 function IncomeDash({ newIncome }) {

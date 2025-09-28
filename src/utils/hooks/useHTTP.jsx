@@ -57,7 +57,7 @@ const useHTTP = () => {
       const result = await axios.post(
         `${baseUrl}/user/login`,
         value,
-        { withCredentials: true } // 👈 this makes the cookie show up
+        { withCredentials: true, } // 👈 this makes the cookie show up
       );
       Cookies.set("token", result.data.data);
       return result.data.data;
