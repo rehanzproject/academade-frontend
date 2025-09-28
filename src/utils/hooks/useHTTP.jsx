@@ -54,11 +54,10 @@ const useHTTP = () => {
 
   const login = async (value) => {
     try {
-      const result = await axios.post(
-        `${baseUrl}/user/login`,
-        value,
-        { withCredentials: true, } // 👈 this makes the cookie show up
-      );
+      const result = await axios.post(`${baseUrl}/user/login`, value, {
+        withCredentials: true,
+      });
+      console.log(result)
       Cookies.set("token", result.data.data);
       return result.data.data;
     } catch (error) {
