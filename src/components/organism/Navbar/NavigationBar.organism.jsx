@@ -2,6 +2,7 @@ import { Fragment } from "react";
 import { Menu, Transition } from "@headlessui/react";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
+import { FaBars } from "react-icons/fa";
 import IconAcademade from "../../molecules/IconAcademade/IconAcademade.molecul";
 import Cookies from "js-cookie";
 import sessionSlice from "../../../config/redux/Session/sessionSlice/sessionSlice";
@@ -13,7 +14,7 @@ function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
 }
 
-function NavigationBar() {
+function NavigationBar({ toggleSidebar, isSidebarOpen }) {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { getRequest } = useHTTP();
@@ -27,23 +28,39 @@ function NavigationBar() {
   const { data: profile } = useSWR("/user/info", getRequest);
 
   return (
-    <section className="flex sticky top-4 z-20 max-w-8xl mx-4 md:mx-8 my-4 px-4 md:px-10 bg-warning-10 h-16 shadow-xl rounded-2xl">
-      {/* Logo Section */}
-      <div className="flex items-center">
-        <IconAcademade />
-      </div>
+    <nav 
+      className={`fixed top-0 right-0 z-30 transition-all duration-300 ease-in-out ${
+        isSidebarOpen 
+          ? "left-0 lg:left-64" 
+          : "left-0 lg:left-20"
+      }`}
+    >
+      <div className="flex items-center justify-between mx-4 md:mx-8 my-4 px-4 md:px-10 bg-warning-10 h-16 shadow-xl rounded-2xl">
+        {/* Left Section: Hamburger (Mobile) + Logo */}
+        <div className="flex items-center gap-4">
+          {/* Hamburger Menu for Mobile */}
+          <button
+            onClick={toggleSidebar}
+            className="lg:hidden p-2 rounded-lg hover:bg-warning-20 transition-colors"
+            aria-label="Toggle sidebar"
+          >
+            <FaBars size={20} />
+          </button>
 
-      {/* Dropdown Icon */}
-      <section className="absolute inset-y-0 right-0 flex items-center pr-4 md:pr-10">
-        <Menu as="div" className="relative mx-4">
-          <Menu.Button className="flex -mb-1 gap-3 rounded-full text-sm focus:ring-white focus:ring-offset-2">
+          {/* Logo */}
+          <IconAcademade />
+        </div>
+
+        {/* Right Section: Profile Dropdown */}
+        <Menu as="div" className="relative">
+          <Menu.Button className="flex items-center gap-2 md:gap-3 rounded-full text-sm focus:outline-none focus:ring-2 focus:ring-warning-30 focus:ring-offset-2">
             <img
-              className="h-8 w-8 rounded-full"
-              src={`${profile?.image ?? pict}`}
+              className="h-8 w-8 rounded-full object-cover"
+              src={profile?.data?.image ?? pict}
               alt="avatar"
             />
-            <h2 className="py-1 text-base md:text-xl font-medium">
-              {profile ? profile?.data?.name : "admin"}
+            <h2 className="hidden sm:block text-base md:text-lg font-medium">
+              {profile?.data?.name ?? "Admin"}
             </h2>
           </Menu.Button>
 
@@ -87,8 +104,8 @@ function NavigationBar() {
             </Menu.Items>
           </Transition>
         </Menu>
-      </section>
-    </section>
+      </div>
+    </nav>
   );
 }
 

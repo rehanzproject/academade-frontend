@@ -21,7 +21,10 @@ const NewCourseForm = ({ createNewCourse, data = {} }) => {
     []
   );
   const handleImageChange = (e) => {
-    setFile(e.target.files[0]);
+    const selectedFile = e.target.files[0];
+    setFile(selectedFile);
+    formik.setFieldValue("thumbnail", selectedFile?.name || "");
+    formik.setFieldTouched("thumbnail", true);
   };
 
   const handleUpload = async (values) => {
@@ -35,14 +38,17 @@ const NewCourseForm = ({ createNewCourse, data = {} }) => {
         uploadImage,
         file,
       });
+      toast.success("Upload successful!");
+      navigate("/course");
     } catch (error) {
       console.log(error.message);
+      toast.error("Upload failed!");
     }
-    toast.success("Upload successful!");
-    navigate("/course");
   };
   const handleRefresh = () => {
     formik.resetForm();
+    setFile(null);
+    formik.setFieldValue("thumbnail", "");
   };
   const formik = useFormik({
     initialValues: initData,
@@ -66,8 +72,13 @@ const NewCourseForm = ({ createNewCourse, data = {} }) => {
         <div className="w-96">
           <div className="mb-2 flex items-center">
             <p className="font-semibold">Course Thumbnail</p>
+            <span className="text-red-500 font-semibold">*</span>
           </div>
-          <div className="w-full h-270 bg-gray-200 flex items-center rounded-xl justify-center rounded-10">
+          <div className={`w-full h-270 bg-gray-200 flex items-center rounded-xl justify-center rounded-10 border ${
+            formik.touched.thumbnail && formik.errors.thumbnail
+              ? "border-red-500 border-2"
+              : "border-transparent"
+          }`}>
             <div className="image-container">
               <div className="flex items-center justify-center w-full">
                 <label
@@ -94,6 +105,9 @@ const NewCourseForm = ({ createNewCourse, data = {} }) => {
               </div>
             </div>
           </div>
+          {formik.touched.thumbnail && formik.errors.thumbnail && (
+            <p className="text-red-500 text-sm mt-1">{formik.errors.thumbnail}</p>
+          )}
         </div>
         <div className="w-5/6 mr-10">
           <div className="mb-2">
@@ -108,10 +122,18 @@ const NewCourseForm = ({ createNewCourse, data = {} }) => {
               id="name"
               value={formik.values.name}
               onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
               name="name"
-              className="w-full h-12 mt-3 bg-gray-200 p-5 rounded-lg border border-gray-500"
-              placeholder="e.g. “Capstone Project 11”"
+              className={`w-full h-12 mt-3 bg-gray-200 p-5 rounded-lg border ${
+                formik.touched.name && formik.errors.name
+                  ? "border-red-500"
+                  : "border-gray-500"
+              }`}
+              placeholder="e.g. 'Capstone Project 11'"
             />
+            {formik.touched.name && formik.errors.name && (
+              <p className="text-red-500 text-sm mt-1">{formik.errors.name}</p>
+            )}
           </div>
           <div className="mb-4">
             <label htmlFor="description">
@@ -125,14 +147,22 @@ const NewCourseForm = ({ createNewCourse, data = {} }) => {
               id="description"
               value={formik.values.description}
               onChange={formik.handleChange}
-              className="resize-y w-full h-40 mt-3 bg-gray-200 p-5 rounded-lg border border-gray-500"
+              onBlur={formik.handleBlur}
+              className={`resize-y w-full h-40 mt-3 bg-gray-200 p-5 rounded-lg border ${
+                formik.touched.description && formik.errors.description
+                  ? "border-red-500"
+                  : "border-gray-500"
+              }`}
               placeholder="Type here..."
               rows="5"
             ></textarea>
+            {formik.touched.description && formik.errors.description && (
+              <p className="text-red-500 text-sm mt-1">{formik.errors.description}</p>
+            )}
           </div>
         </div>
       </div>
-      <div className="mr-10 flex flex-row items-center gap-4"> {/* Adjusted this div */}
+      <div className="mr-10 flex flex-row items-center gap-4">
         <div className="flex-1">
           <label htmlFor="price">
             <div className="flex items-center">
@@ -145,16 +175,23 @@ const NewCourseForm = ({ createNewCourse, data = {} }) => {
             id="price"
             value={formik.values.price}
             onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
             name="price"
-            className="w-full h-12 mt-1 bg-gray-200 p-5 rounded-lg border border-gray-500"
+            className={`w-full h-12 mt-1 bg-gray-200 p-5 rounded-lg border ${
+              formik.touched.price && formik.errors.price
+                ? "border-red-500"
+                : "border-gray-500"
+            }`}
             placeholder="00000"
           />
+          {formik.touched.price && formik.errors.price && (
+            <p className="text-red-500 text-sm mt-1">{formik.errors.price}</p>
+          )}
         </div>
         <div className="flex-1">
-          <label htmlFor="level">
+          <label htmlFor="coupon">
             <div className="flex items-center">
               <p className="font-semibold">Coupon</p>
-              <span className="text-red-500 font-semibold">*</span>
             </div>
           </label>
           <input
@@ -162,10 +199,14 @@ const NewCourseForm = ({ createNewCourse, data = {} }) => {
             id="coupon"
             value={formik.values.coupon}
             onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
             name="coupon"
             className="w-full h-12 mt-1 bg-gray-200 p-5 rounded-lg border border-gray-500"
             placeholder="eg: LETSROCK"
           />
+          {formik.touched.coupon && formik.errors.coupon && (
+            <p className="text-red-500 text-sm mt-1">{formik.errors.coupon}</p>
+          )}
         </div>
       </div>
       <div className="flex font-semibold mt-6">

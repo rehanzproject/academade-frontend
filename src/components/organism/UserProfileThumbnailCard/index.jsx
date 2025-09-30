@@ -11,7 +11,7 @@ function UserProfileThumbnailCard({ data, avatar }) {
       <img
         src={
           avatar
-            ? `${import.meta.env.VITE_BASE_URL}/public/image/${avatar}`
+            ? `/public/image/${avatar}`
             : LocalAvatar
         }
         alt="user thumbnail"

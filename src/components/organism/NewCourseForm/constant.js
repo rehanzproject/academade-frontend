@@ -11,5 +11,5 @@ export const validationCreateNewCourse = Yup.object().shape({
   name: Yup.string().required(),
   description: Yup.string().required(),
   price: Yup.string().required(),
-  coupon: Yup.string().required(),
+  coupon: Yup.string(),
 });

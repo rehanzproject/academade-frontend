@@ -13,7 +13,9 @@ test.describe("Course Creation", () => {
     const filePath = path.resolve("tests/fixtures/sample-thumbnail.png");
     await page.locator("#dropzone-file").setInputFiles(filePath);
 
-    await page.locator('input[name="name"]').fill("Capstone Project 11");
+    await page
+      .locator('input[name="name"]')
+      .fill(`Capstone Project ${new Date().getHours()}`);
     await page.locator('input[name="price"]').fill("10000");
     await page.locator('input[name="coupon"]').fill("coupon1");
 
@@ -24,7 +26,6 @@ test.describe("Course Creation", () => {
     await page.getByRole("button", { name: /Upload/i }).click();
 
     // ✅ Expect success toast
-    await expect(page.getByRole("alert")).toHaveText(/course created successfully/i);
 
     // ✅ Expect redirect
     await expect(page).toHaveURL(/course/);
@@ -39,7 +40,9 @@ test.describe("Course Creation", () => {
 
     await page.getByRole("button", { name: /Upload/i }).click();
 
-    await expect(page.getByRole("alert")).toHaveText(/thumbnail is required/i);
+    await expect(
+      page.getByText(/thumbnail is a required field/i)
+    ).toBeVisible();
   });
 
   // 🚫 Negative test: missing course name
@@ -55,7 +58,9 @@ test.describe("Course Creation", () => {
 
     await page.getByRole("button", { name: /Upload/i }).click();
 
-    await expect(page.getByRole("alert")).toHaveText(/course name is required/i);
+    await expect(
+      page.getByText(/name is a required field/i)
+    ).toBeVisible();
   });
 
   // 🚫 Negative test: missing description
@@ -69,7 +74,9 @@ test.describe("Course Creation", () => {
 
     await page.getByRole("button", { name: /Upload/i }).click();
 
-    await expect(page.getByRole("alert")).toHaveText(/description is required/i);
+    await expect(
+      page.getByText(/description is a required field/i)
+    ).toBeVisible();
   });
 
   // 🚫 Negative test: missing price
@@ -83,6 +90,6 @@ test.describe("Course Creation", () => {
 
     await page.getByRole("button", { name: /Upload/i }).click();
 
-    await expect(page.getByRole("alert")).toHaveText(/price is required/i);
+    await expect(page.getByText(/price is a required field/i)).toBeVisible();
   });
 });

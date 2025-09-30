@@ -6,7 +6,7 @@ import NavigationBar from "../organism/Navbar/NavigationBar.organism";
 
 function DashboardTemplate() {
   const location = useLocation();
-  const [isSidebarOpen, setIsSidebarOpen] = useState(false); // State to manage sidebar visibility
+  const [isSidebarOpen, setIsSidebarOpen] = useState(true);
 
   const toggleSidebar = () => {
     setIsSidebarOpen(!isSidebarOpen);
@@ -14,24 +14,27 @@ function DashboardTemplate() {
 
   return (
     <>
-      {/* Navigation Bar */}
-      <NavigationBar toggleSidebar={toggleSidebar} />
+      <NavigationBar 
+        toggleSidebar={toggleSidebar} 
+        isSidebarOpen={isSidebarOpen} 
+      />
 
-      {/* Sidebar (Conditional Rendering) */}
       {location.pathname.includes("profile") ? (
         <ProfileSideBar isOpen={isSidebarOpen} onClose={toggleSidebar} />
       ) : (
         <SideBar isOpen={isSidebarOpen} onClose={toggleSidebar} />
       )}
 
-      {/* Main Content */}
-      <div
-        className={`relative pt-16 transition-all duration-300 ease-in-out ${
-          isSidebarOpen ? "pl-72" : "pl-0"
-        } md:pl-72 my-6`}
+      {/* Main Content Area */}
+      <main
+        className={`min-h-screen pt-24 px-4 md:px-8 transition-all duration-300 ease-in-out ${
+          isSidebarOpen 
+            ? "ml-0 lg:ml-64" 
+            : "ml-0 lg:ml-20"
+        }`}
       >
         <Outlet />
-      </div>
+      </main>
     </>
   );
 }

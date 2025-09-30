@@ -1,13 +1,11 @@
-import { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import DashboardIcon from "../../atoms/Icons/DashboardIcon.atom";
 import CourseIcon from "../../atoms/Icons/CourseIcon.atom";
 import ReportingIcon from "../../atoms/Icons/ReportingIcon.atom";
-import { FaBars, FaTimes } from "react-icons/fa"; // Import hamburger and close icons
+import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
 
-function SideBar() {
+function SideBar({ isOpen, onClose }) {
   const location = useLocation();
-  const [isSidebarOpen, setIsSidebarOpen] = useState(false); // State to manage sidebar visibility
 
   const nav = [
     {
@@ -28,57 +26,70 @@ function SideBar() {
   ];
 
   const toggleSidebar = () => {
-    setIsSidebarOpen(!isSidebarOpen);
-  };
-
-  const closeSidebar = () => {
-    setIsSidebarOpen(false);
+    onClose(); // Use the parent's toggle function
   };
 
   return (
     <>
-      {/* Hamburger Menu Button (Visible on Small Screens) */}
-      <button
-        onClick={toggleSidebar}
-        className="fixed top-4 left-4 z-20 p-2 bg-primary-30 rounded-lg md:hidden"
-      >
-        {isSidebarOpen ? <FaTimes size={24} /> : <FaBars size={24} />}
-      </button>
-
-      {/* Backdrop for Mobile (Visible when sidebar is open) */}
-      {isSidebarOpen && (
+      {/* Backdrop for Mobile (Visible when sidebar is open on small screens) */}
+      {isOpen && (
         <div
-          className="fixed inset-0 z-10 bg-black bg-opacity-50 md:hidden"
-          onClick={closeSidebar}
+          className="fixed inset-0 z-30 bg-black bg-opacity-50 lg:hidden"
+          onClick={toggleSidebar}
         ></div>
       )}
 
       {/* Sidebar */}
-      <section
-        className={`fixed top-0 z-20 bg-primary-30 w-72 min-h-screen transition-all duration-300 ease-in-out transform ${
-          isSidebarOpen ? "translate-x-0" : "-translate-x-full"
-        } md:translate-x-0`}
+      <aside
+        className={`fixed top-0 left-0 z-40 bg-primary-30 min-h-screen transition-all duration-300 ease-in-out ${
+          isOpen ? "w-64 sm:w-72" : "w-0 lg:w-20"
+        } overflow-hidden`}
       >
-        <section className="text-center items-center flex-row">
+        <nav className="pt-20 px-4">
           {nav.map((item) => (
             <Link
               key={item.name}
               to={item.href}
-              className={`inline-flex relative px-4 w-64 mx-8 top-40 my-2 py-2 rounded-lg ${
+              className={`flex items-center px-4 py-3 mb-2 rounded-lg transition-all duration-200 ease-in-out ${
                 location.pathname.includes(item.href.slice(1))
-                  ? "bg-white font-bold"
+                  ? "bg-white font-bold shadow-md"
                   : "hover:bg-primary-50/50"
-              } transition-all duration-200 ease-in-out`}
-              onClick={closeSidebar} // Close sidebar on link click
+              } ${!isOpen ? "lg:justify-center" : ""}`}
+              onClick={() => {
+                // Close sidebar on mobile after clicking
+                if (window.innerWidth < 1024) {
+                  toggleSidebar();
+                }
+              }}
+              title={!isOpen ? item.name : ""}
             >
-              <div className="flex items-center justify-start">
-                {item.icon}
-                <h1 className="mx-4 text-xl">{item.name}</h1>
-              </div>
+              <div className="flex-shrink-0">{item.icon}</div>
+              <span
+                className={`ml-4 text-lg whitespace-nowrap transition-opacity duration-300 ${
+                  isOpen ? "opacity-100" : "lg:opacity-0 lg:w-0 lg:ml-0"
+                }`}
+              >
+                {item.name}
+              </span>
             </Link>
           ))}
-        </section>
-      </section>
+        </nav>
+      </aside>
+
+      {/* Toggle Button (Center of Sidebar Edge) */}
+      <button
+        onClick={toggleSidebar}
+        className={`fixed top-1/2 -translate-y-1/2 z-50 p-2 bg-primary-30 rounded-r-lg shadow-lg transition-all duration-300 ease-in-out hover:bg-primary-50 focus:outline-none focus:ring-2 focus:ring-primary-50 ${
+          isOpen ? "left-64 sm:left-72" : "left-0 lg:left-20"
+        }`}
+        aria-label={isOpen ? "Close sidebar" : "Open sidebar"}
+      >
+        {isOpen ? (
+          <FaChevronLeft size={20} />
+        ) : (
+          <FaChevronRight size={20} />
+        )}
+      </button>
     </>
   );
 }
